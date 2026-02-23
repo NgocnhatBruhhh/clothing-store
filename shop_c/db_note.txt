@@ -1,0 +1,91 @@
+1.rules
+ID (int): Khóa chính, mã định danh của quy tắc.
+name (nvarchar(255)): Tên của quy tắc.
+2.accounts
+ID (int): Khóa chính, mã định danh của tài khoản.
+email (nvarchar(255)): Email đăng nhập của người dùng.
+password (varchar(255)): Mật khẩu của tài khoản.
+status (int): Trạng thái của tài khoản (ví dụ: kích hoạt hoặc bị khóa).
++Bảng accounts có mối quan hệ với bảng rules thể hiện rằng mỗi tài khoản có thể có một vai trò xác định.
+
+3.staffs
+ID (int): Khóa chính, mã định danh của nhân viên.
+name (nvarchar(255)): Tên nhân viên.
+phone (varchar(255)): Số điện thoại của nhân viên.
+address (nvarchar(255)): Địa chỉ của nhân viên.
+status (int): Trạng thái làm việc của nhân viên đang làm việc (1) hoặc nghỉ(0).
++Mỗi nhân viên liên kết với một tài khoản trong bảng accounts.
+
+4.customers
+ID (int): Khóa chính, mã định danh của khách hàng.
+name (nvarchar(255)): Tên khách hàng.
+phone (varchar(255)): Số điện thoại khách hàng.
+image (varchar(255)): Đường dẫn tới ảnh đại diện của khách hàng.
++Mỗi khách hàng có thể có một tài khoản trong bảng accounts.
+
+5.orders:
+lưu trữ đơn hàng của khách hàng, bao gồm các thông tin như thời gian tạo (create_time), thời gian cập nhật (update_time), phí vận chuyển (ship_fee), phí sản phẩm (product_fee), tổng tiền (total), trạng thái thanh toán (payment_status), địa chỉ giao hàng (address), và các thông tin khác về đơn hàng.
+Quan hệ: Mỗi đơn hàng có một khách hàng (qua customersID).
+
+6.order_details:
+Bảng này lưu trữ chi tiết từng sản phẩm trong mỗi đơn hàng, bao gồm số lượng (quantity), giá trị đơn vị (unit_price), và liên kết với đơn hàng (ordersID) và chi tiết sản phẩm (product_detailsID).
+Quan hệ: Mỗi chi tiết đơn hàng thuộc về một đơn hàng và một sản phẩm chi tiết.
+
+7.products
+ID (int): Khóa chính, mã định danh của sản phẩm.
+name (nvarchar(255)): Tên sản phẩm.
+image (varchar(255)): Hình ảnh sản phẩm.
+description (nvarchar(255)): Mô tả sản phẩm.
+
+
+8.product_details
+ID (int): Khóa chính, mã định danh của chi tiết sản phẩm.
+quantity (int): Số lượng sản phẩm trong kho.
+price (int): Giá của sản phẩm.
++Chi tiết sản phẩm chỉ ra cụ thể số lượng, kích cỡ và giá của sản phẩm.
+
+9.Carts
+quantity (int): Số lượng sản phẩm trong giỏ hàng.
+total_price: lưu tổng số tiền cho mỗi mục trong giỏ (tính từ quantity * unit_price)***trường được tính tự động
+status (int): Trạng thái của sản phẩm trong giỏ hàng (ví dụ: đang chờ thanh toán).
+customersID (int): Khóa ngoại liên kết với bảng customers.
+product_detailsID (int): Khóa ngoại liên kết với bảng product_details.
++Bảng này lưu trữ giỏ hàng của khách hàng. Mỗi giỏ hàng có một ID (ID), số lượng sản phẩm (quantity), tổng giá trị (total_price), trạng thái giỏ hàng (status), và liên kết với khách hàng (customersID) và chi tiết sản phẩm (product_detailsID).
+Quan hệ: Giỏ hàng thuộc về một khách hàng (qua customersID) và chứa các chi tiết sản phẩm (qua product_detailsID).
+
+
+10.feedbacks
+ID (int): Khóa chính, mã định danh phản hồi.
+description (nvarchar(255)): Nội dung phản hồi.
++Phản hồi từ khách hàng về các sản phẩm.
+
+11. invoice_status
+lưu trữ thông tin về trạng thái của các hóa đơn:
+Đang chờ xử lý: Hóa đơn đã được tạo nhưng chưa được xử lý.
+Đã thanh toán: Hóa đơn đã được khách hàng thanh toán thành công.
+Đang giao hàng: Hóa đơn đã được thanh toán và sản phẩm đang trong quá trình vận chuyển.
+Đã hoàn thành: Hóa đơn đã được xử lý và giao hàng thành công.
+Đã hủy: Hóa đơn bị hủy bởi khách hàng hoặc người quản lý.
+
+12: types
+Lưu trữ thông tin về loại sản phẩm.
+
+13: origins
+nguồn gốc xuất xứ của sản phẩm
+
+14: brands
+các thương hiệu sản phẩm 
+
+15: materials
+Lưu trữ thông tin về chất liệu sản phẩm
+
+16: sizes
+Quản lý thông tin về các kích cỡ sản phẩm
+
+17: payment_methods
+Lưu thông tin về các phương thức thanh toán được hỗ trợ.
+
+18: reasons
+quản lý thông tin về lý do hủy đơn hàng, được liên kết với bảng orders.
+lý do đến từ khách hàng: không hài lòng với chất lượng, sự cố tài chính, thời gian giao hàng lâu, đặt nhầm sản phẩm, thay đổi địa chỉ nhận hàng, ... lý do khác
+lý do đến từ của hàng: địa chỉ giao hàng sai, thanh toán không thành công, khách hàng không trả lời hoặc không phản hồi, lỗi hệ thống,..
